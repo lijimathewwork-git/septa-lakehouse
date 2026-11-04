@@ -1,12 +1,12 @@
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
 
 from src.ingest import transitview as tv
 
-T = datetime(2026, 11, 2, 14, 5, 9, tzinfo=timezone.utc)
+T = datetime(2026, 11, 2, 14, 5, 9, tzinfo=UTC)
 
 
 def test_partition_path_layout():

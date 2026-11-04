@@ -10,7 +10,7 @@ import json
 import logging
 import os
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import requests
@@ -75,7 +75,7 @@ def run_once() -> Path:
     bucket = os.getenv("S3_BUCKET", "").strip()
     prefix = os.getenv("S3_PREFIX", "raw/transitview").strip("/")
 
-    fetched_at = datetime.now(timezone.utc)
+    fetched_at = datetime.now(UTC)
     result = fetch(url)
     envelope = build_envelope(url, result, fetched_at)
     path = save_local(envelope, base, fetched_at)

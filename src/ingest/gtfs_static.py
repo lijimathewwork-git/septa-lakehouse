@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import requests
@@ -15,13 +15,12 @@ import requests
 
 def download(url: str, dest_dir: Path) -> Path:
     dest_dir.mkdir(parents=True, exist_ok=True)
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%d")
+    stamp = datetime.now(UTC).strftime("%Y%m%d")
     dest = dest_dir / f"gtfs_{stamp}.zip"
     with requests.get(url, stream=True, timeout=60) as resp:
         resp.raise_for_status()
         with open(dest, "wb") as fh:
-            for chunk in resp.iter_content(chunk_size=1 << 20):
-                fh.write(chunk)
+            fh.writelines(resp.iter_content(chunk_size=1 << 20))
     return dest
 
 
